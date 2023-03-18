@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://demo/scenes/other/ComputerProgram.gd" type="Script" id=1]
-[ext_resource path="res://demo/fonts/big_font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://demo/fonts/big_font.tres" type="FontFile" id=2]
 [ext_resource path="res://demo/scenes/other/CustomButton.tscn" type="PackedScene" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -25,8 +25,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.3, 0.77, 0.86, 1.53, 2 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 0.3, 0.77, 0.86, 1.53, 2 ),
+"transitions": PackedFloat32Array( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ 0.0, 25.0, 30.0, 50.0, 90.0, 95.0, 100.0 ]
 }
@@ -34,9 +34,9 @@ tracks/0/keys = {
 [node name="ComputerProgram" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -684.0
-margin_bottom = -400.0
-rect_min_size = Vector2( 340, 200 )
+offset_right = -684.0
+offset_bottom = -400.0
+custom_minimum_size = Vector2( 340, 200 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -45,7 +45,7 @@ __meta__ = {
 [node name="Background" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 340, 200 )
+custom_minimum_size = Vector2( 340, 200 )
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -56,11 +56,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -125.0
-margin_top = -20.0
-margin_right = 125.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 250, 40 )
+offset_left = -125.0
+offset_top = -20.0
+offset_right = 125.0
+offset_bottom = 20.0
+custom_minimum_size = Vector2( 250, 40 )
 custom_styles/fg = SubResource( 1 )
 custom_styles/bg = SubResource( 2 )
 percent_visible = false
@@ -72,36 +72,36 @@ anchor_bottom = 1.0
 alignment = 1
 
 [node name="Question" type="Label" parent="Background/Upload"]
-margin_top = 28.0
-margin_right = 340.0
-margin_bottom = 94.0
+offset_top = 28.0
+offset_right = 340.0
+offset_bottom = 94.0
 custom_fonts/font = ExtResource( 2 )
 text = "UPLOAD?"
 align = 1
 
 [node name="Buttons" type="HBoxContainer" parent="Background/Upload"]
-margin_top = 98.0
-margin_right = 340.0
-margin_bottom = 172.0
+offset_top = 98.0
+offset_right = 340.0
+offset_bottom = 172.0
 custom_constants/separation = 22
 alignment = 1
 
 [node name="No" parent="Background/Upload/Buttons" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 21.0
-margin_right = 159.0
-margin_bottom = 74.0
-rect_min_size = Vector2( 138, 0 )
+offset_left = 21.0
+offset_right = 159.0
+offset_bottom = 74.0
+custom_minimum_size = Vector2( 138, 0 )
 text = "NO"
 
 [node name="Yes" parent="Background/Upload/Buttons" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 181.0
-margin_right = 319.0
-margin_bottom = 74.0
-rect_min_size = Vector2( 138, 0 )
+offset_left = 181.0
+offset_right = 319.0
+offset_bottom = 74.0
+custom_minimum_size = Vector2( 138, 0 )
 text = "YES"
 
 [node name="WhyNot" type="Label" parent="Background"]
@@ -119,10 +119,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -76.0
-margin_top = -32.5
-margin_right = 76.0
-margin_bottom = 32.5
+offset_left = -76.0
+offset_top = -32.5
+offset_right = 76.0
+offset_bottom = 32.5
 custom_fonts/font = ExtResource( 2 )
 text = "DONE"
 

@@ -3,9 +3,9 @@ extends Node
 
 func list_directory(path):
 	var files = []
-	var dir = Directory.new()
-	if dir.open(path) == OK:
-		dir.list_dir_begin()
+	var dir = DirAccess.open(path)
+	if null != dir:
+		dir.list_dir_begin() # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 		var file_name = dir.get_next()
 		while file_name != "":
 			if not dir.current_is_dir():
@@ -17,8 +17,7 @@ func list_directory(path):
 
 
 func load_text_file(path):
-	var file = File.new()
-	file.open(path, File.READ)
+	var file = FileAccess.open(path, FileAccess.READ)
 	var content = file.get_as_text()
 	file.close()
 	return content

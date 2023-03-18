@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 """
 Used to 'zoom in' to a part of the environment, possibly containing a puzzle.
@@ -7,22 +7,21 @@ It should not be used with inventory items.
 NOTE: Currently there can only be one DetailedInteraction per scene.
 """
 
-onready var interactive_item = $InteractiveItem
-onready var camera = $Camera
-onready var ray_cast = $Camera/RayCast3D
-onready var tween = $Tween
+@onready var interactive_item = $InteractiveItem
+@onready var camera = $Camera3D
+@onready var ray_cast = $Camera3D/RayCast3D
 # Backplate is used to stop the ray_cast from reaching environment items
-onready var backplate = $Backplate
-onready var original_camera_transform = camera.global_transform
+@onready var backplate = $Backplate
+@onready var original_camera_transform = camera.global_transform
 # This is the camera that is active when the detailed interaction starts
 var player_camera = null
 
 
 func _ready():
-	if not interactive_item.unique_name:
+	if interactive_item.unique_name.is_empty():
 		var unique_name = "detailed_interaction_" + str(get_instance_id())
 		interactive_item.unique_name = unique_name
-	goat_interaction.connect("object_activated", self, "_on_object_activated")
+	goat_interaction.connect("object_activated",Callable(self,"_on_object_activated"))
 
 
 func _on_object_activated(object_name, _point):
@@ -38,17 +37,15 @@ func _on_object_activated(object_name, _point):
 	backplate.collision_mask = interactive_item.COLLISION_MASK_LAYER
 	ray_cast.enabled = true
 	
-	player_camera = get_viewport().get_camera()
+	player_camera = get_viewport().get_camera_3d()
 	var transform_from = player_camera.global_transform
 	var transform_to = camera.global_transform
-	tween.interpolate_property(
-		camera, "global_transform",
-		transform_from, transform_to,
-		0.5, Tween.TRANS_SINE, Tween.EASE_IN_OUT
-	)
-	tween.start()
+	
+	var tween = get_tree().create_tween()
+	camera.global_transform = transform_from
+	tween.tween_property(camera, "global_transform", transform_to, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_callback(self._on_Tween_tween_all_completed)
 	camera.current = true
-
 
 func _input(event):
 	if goat.game_mode != goat.GameMode.DETAILED_INTERACTION:
@@ -61,7 +58,7 @@ func _input(event):
 		var ray_vector = camera.project_local_ray_normal(
 			event.position
 		)
-		ray_cast.cast_to = ray_vector * 10
+		ray_cast.target_position = ray_vector * 10
 	
 	if (
 		Input.is_action_just_pressed("goat_dismiss") or
@@ -77,12 +74,11 @@ func _input(event):
 		
 		var transform_from = camera.global_transform
 		var transform_to = player_camera.global_transform
-		tween.interpolate_property(
-			camera, "global_transform",
-			transform_from, transform_to,
-			0.5, Tween.TRANS_SINE, Tween.EASE_IN_OUT
-		)
-		tween.start()
+		
+		var tween = get_tree().create_tween()
+		camera.global_transform = transform_from
+		tween.tween_property(camera, "global_transform", transform_to, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tween.tween_callback(self._on_Tween_tween_all_completed)
 		player_camera = null
 
 

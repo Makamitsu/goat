@@ -1,6 +1,6 @@
 extends OptionButton
 
-onready var popup = get_popup()
+@onready var popup = get_popup()
 
 
 func _ready():
@@ -28,7 +28,7 @@ func _ready():
 		"custom_styles/panel",
 		load("res://goat/styles/settings_language_background.tres")
 	)
-	popup.set("custom_constants/vseparation", 12)
+	popup.set("custom_constants/v_separation", 12)
 
 
 func _on_SettingsLanguageButton_item_selected(id):

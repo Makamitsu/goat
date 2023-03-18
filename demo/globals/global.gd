@@ -7,4 +7,4 @@ func _ready():
 		["but_why", "what_for", "this_doesnt_make_sense"]
 	)
 	
-	get_tree().change_scene("res://demo/scenes/main/Gameplay.tscn")
+	get_tree().change_scene_to_file("res://demo/scenes/main/Gameplay.tscn")

@@ -21,7 +21,7 @@ func _on_Play_pressed():
 
 
 func _on_Credits_pressed():
-	get_tree().change_scene("res://demo/scenes/main/Credits.tscn")
+	get_tree().change_scene_to_file("res://demo/scenes/main/Credits.tscn")
 
 
 func _on_Settings_pressed():

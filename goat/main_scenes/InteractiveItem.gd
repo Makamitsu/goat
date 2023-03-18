@@ -1,6 +1,6 @@
-tool
+@tool
 class_name InteractiveItem
-extends StaticBody
+extends StaticBody3D
 
 """
 Represents a simple interactive object, e.g. a switch on a wall or a lever.
@@ -16,16 +16,17 @@ enum ItemType {
 	INVENTORY,
 }
 
-export (String) var unique_name
-export (ItemType) var item_type = ItemType.NORMAL
+@export var unique_name: String
+@export var item_type: ItemType = ItemType.NORMAL
 # This will only be used by items with type INVENTORY
-export (String) var inventory_item_name
-export (Shape) var collision_shape = BoxShape.new() setget set_collision_shape
-export (Array, AudioStream) var sounds setget set_sounds
+@export var inventory_item_name: String
+@export var collision_shape: Shape3D = BoxShape3D.new() : set = set_collision_shape
+@export var sounds : Array[AudioStream]:
+	set = set_sounds
 
-onready var interaction_icon = $InteractionIcon
-onready var random_audio_player = $RandomAudioPlayer
-onready var collision_shape_node = $CollisionShape
+@onready var interaction_icon = $InteractionIcon
+@onready var random_audio_player = $RandomAudioPlayer
+@onready var collision_shape_node = $CollisionShape3D
 
 const COLLISION_MASK_LAYER = 2
 
@@ -36,14 +37,14 @@ func _ready():
 	collision_shape_node.shape = collision_shape
 	random_audio_player.streams = sounds
 	
-	goat_interaction.connect("object_selected", self, "_on_object_selected")
-	goat_interaction.connect("object_deselected", self, "_on_object_deselected")
-	goat_interaction.connect("object_activated", self, "_on_object_activated")
-	goat_interaction.connect("object_disabled", self, "_on_object_disabled")
-	goat_interaction.connect("object_enabled", self, "_on_object_enabled")
+	goat_interaction.connect("object_selected",Callable(self,"_on_object_selected"))
+	goat_interaction.connect("object_deselected",Callable(self,"_on_object_deselected"))
+	goat_interaction.connect("object_activated",Callable(self,"_on_object_activated"))
+	goat_interaction.connect("object_disabled",Callable(self,"_on_object_disabled"))
+	goat_interaction.connect("object_enabled",Callable(self,"_on_object_enabled"))
 	goat_interaction.connect(
-		"object_activated_alternatively", self,
-		"_on_object_activated_alternatively"
+		"object_activated_alternatively", Callable(self,
+		"_on_object_activated_alternatively")
 	)
 
 
@@ -57,9 +58,9 @@ func set_sounds(new_sounds):
 	sounds = new_sounds
 	# Disable sound loop
 	for sound in sounds:
-		if sound is AudioStreamSample:
-			sound.loop_mode = AudioStreamSample.LOOP_DISABLED
-		elif sound is AudioStreamOGGVorbis:
+		if sound is AudioStreamWAV:
+			sound.loop_mode = AudioStreamWAV.LOOP_DISABLED
+		elif sound is AudioStreamOggVorbis:
 			sound.loop = false
 	if is_inside_tree():
 		random_audio_player.stream = sounds

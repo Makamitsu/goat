@@ -2,7 +2,7 @@ extends CenterContainer
 
 
 func _ready():
-	goat.connect("game_mode_changed", self, "_on_game_mode_changed")
+	goat.connect("game_mode_changed",Callable(self,"_on_game_mode_changed"))
 
 
 func _on_game_mode_changed(new_game_mode):
@@ -23,7 +23,7 @@ func _input(_event):
 func _on_Exit_pressed():
 	goat_voice.stop()
 	if goat.EXIT_SCENE:
-		get_tree().change_scene(goat.EXIT_SCENE)
+		get_tree().change_scene_to_file(goat.EXIT_SCENE)
 		goat.game_mode = goat.GameMode.NONE
 	else:
 		get_tree().quit()

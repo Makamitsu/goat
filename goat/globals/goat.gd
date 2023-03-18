@@ -12,13 +12,13 @@ enum GameMode {
 	SETTINGS,
 }
 
-export (GameMode) var game_mode = GameMode.NONE setget set_game_mode
-
+@export var game_mode: GameMode = GameMode.NONE:
+	set = set_game_mode
 
 func set_game_mode(new_game_mode):
 	# Usually game mode change is a result of user input (e.g. pressing Tab),
 	# and that input shouldn't cause further game mode changes
-	get_tree().set_input_as_handled()
+	get_viewport().set_input_as_handled()
 	game_mode = new_game_mode
 	emit_signal("game_mode_changed", game_mode)
 
@@ -30,8 +30,8 @@ func _input(_event):
 
 func take_screenshot() -> void:
 	var screenshot_directory_path = "user://" + SCREENSHOT_DIRECTORY
-	Directory.new().make_dir(screenshot_directory_path)
-	var dt = OS.get_datetime()
+	DirAccess.make_dir_absolute(screenshot_directory_path)
+	var dt = Time.get_datetime_dict_from_system()
 	var screenshot_filename = "Screenshot %04d-%02d-%02d %02d:%02d:%02d.png" % [
 		dt["year"], dt["month"], dt["day"],
 		dt["hour"], dt["minute"], dt["second"]
